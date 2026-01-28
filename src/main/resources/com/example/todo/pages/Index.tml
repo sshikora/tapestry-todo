@@ -1,0 +1,101 @@
+<html t:type="layout" title="Todo App"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-5xl font-bold text-white mb-2 drop-shadow-lg">Todo App</h1>
+            <p class="text-white text-opacity-80">Built with Apache Tapestry &amp; Tailwind CSS</p>
+        </div>
+
+        <!-- Main Card -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Add Todo Form -->
+            <div class="p-6 bg-gray-50 border-b border-gray-200">
+                <t:form t:id="addForm" class="flex gap-3">
+                    <t:textfield t:id="newTodoTitle" value="newTodoTitle"
+                                 class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                 placeholder="What needs to be done?"/>
+                    <button type="submit"
+                            class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition transform hover:scale-105">
+                        Add
+                    </button>
+                </t:form>
+            </div>
+
+            <!-- Stats -->
+            <div class="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">
+                        <span class="font-bold text-purple-600">${totalCount}</span> total
+                    </span>
+                    <span class="text-gray-600">
+                        <span class="font-bold text-green-600">${completedCount}</span> completed
+                    </span>
+                    <span class="text-gray-600">
+                        <span class="font-bold text-orange-600">${pendingCount}</span> pending
+                    </span>
+                </div>
+            </div>
+
+            <!-- Todo List -->
+            <div class="divide-y divide-gray-100">
+                <t:if test="hasTodos">
+                    <t:loop source="todos" value="currentTodo">
+                        <div class="todo-item flex items-center gap-4 p-4 hover:bg-gray-50">
+                            <!-- Toggle Button -->
+                            <t:actionlink t:id="toggle" context="currentTodo.id"
+                                          class="w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition ${checkboxClass}">
+                                <t:if test="currentTodo.completed">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </t:if>
+                            </t:actionlink>
+
+                            <!-- Todo Text -->
+                            <span class="flex-1 text-gray-800 ${todoItemClass}">
+                                ${currentTodo.title}
+                            </span>
+
+                            <!-- Delete Button -->
+                            <t:actionlink t:id="delete" context="currentTodo.id"
+                                          class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </t:actionlink>
+                        </div>
+                    </t:loop>
+                    <p:else>
+                        <div class="p-12 text-center">
+                            <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            </svg>
+                            <p class="text-gray-500 text-lg">No todos yet!</p>
+                            <p class="text-gray-400">Add a task above to get started</p>
+                        </div>
+                    </p:else>
+                </t:if>
+            </div>
+
+            <!-- Footer Actions -->
+            <t:if test="hasCompletedTodos">
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                    <t:actionlink t:id="clearCompleted"
+                                  class="text-sm text-gray-500 hover:text-red-600 transition">
+                        Clear completed tasks
+                    </t:actionlink>
+                </div>
+            </t:if>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8 text-white text-opacity-70 text-sm">
+            <p>Double-click the circle to toggle completion</p>
+            <p class="mt-2">Powered by Apache Tapestry 5.8</p>
+        </div>
+    </div>
+
+</html>
